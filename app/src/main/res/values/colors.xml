@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand -->
+    <color name="cse_blue">#1565C0</color>
+    <color name="cse_blue_dark">#0D47A1</color>
+    <color name="cse_blue_light">#1976D2</color>
+
+    <!-- Backgrounds -->
+    <color name="bg_dark">#0F1117</color>
+    <color name="card_bg">#1A1D27</color>
+    <color name="banner_bg">#0D47A1</color>
+
+    <!-- Gain / Loss -->
+    <color name="gain_green">#00C853</color>
+    <color name="gain_green_faint">#1500C853</color>
+    <color name="loss_red">#FF1744</color>
+    <color name="loss_red_faint">#15FF1744</color>
+
+    <!-- Widget -->
+    <color name="widget_bg">#CC0F1117</color>
+
+    <!-- System -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

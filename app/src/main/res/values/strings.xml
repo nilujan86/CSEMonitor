@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CSE Monitor</string>
+    <string name="widget_description">CSE Stock Widget – shows live price of your pinned stock</string>
+    <string name="refresh">Refresh</string>
+    <string name="pin_to_widget">Pin to widget</string>
+    <string name="add_stock">Add stock</string>
+    <string name="remove_stock">Remove stock</string>
+    <string name="no_stocks">Add stocks to your watchlist</string>
+    <string name="loading">Loading…</string>
+    <string name="error_network">Network error – check your connection</string>
+</resources>
