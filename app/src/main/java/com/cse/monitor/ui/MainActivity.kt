@@ -115,20 +115,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAddStockDialog() {
-        val symbols = CSE_POPULAR_STOCKS.map { "${it.first} — ${it.second}" }.toTypedArray()
+    // Observe search results and show in a searchable dialog
+    val dialogView = layoutInflater.inflate(R.layout.dialog_search_stock, null)
+    val etSearch = dialogView.findViewById<android.widget.EditText>(R.id.etDialogSearch)
+    val rvResults = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvDialogResults)
+    val progressBar = dialogView.findViewById<android.widget.ProgressBar>(R.id.dialogProgress)
 
-        AlertDialog.Builder(this)
-            .setTitle("Add Stock to Watchlist")
-            .setItems(symbols) { _, idx ->
-                val symbol = CSE_POPULAR_STOCKS[idx].first
-                viewModel.addToWatchlist(symbol)
-            }
-            .setNeutralButton("Enter symbol manually") { _, _ ->
-                showManualSymbolDialog()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+    val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+        .setTitle("Search CSE Companies")
+        .setView(dialogView)
+        .setNegativeButton("Cancel", null)
+        .create()
+
+    // Simple list adapter for dialog
+    val resultAdapter = SearchResultAdapter { symbol, name ->
+        viewModel.addToWatchlist(symbol)
+        dialog.dismiss()
     }
+
+    rvResults.layoutManager =
+        androidx.recyclerview.widget.LinearLayoutManager(this)
+    rvResults.adapter = resultAdapter
+
+    // Observe results
+    viewModel.searchResults.observe(this) { results ->
+        resultAdapter.submitList(results)
+        progressBar.visibility = android.view.View.GONE
+    }
+
+    viewModel.isLoading.observe(this) { loading ->
+        progressBar.visibility =
+            if (loading) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    // Search as user types
+    etSearch.addTextChangedListener(object : android.text.TextWatcher {
+        override fun afterTextChanged(s: android.text.Editable?) {
+            viewModel.searchSymbols(s.toString())
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    })
+
+    // Load full list immediately
+    viewModel.searchSymbols("")
+
+    dialog.show()
+}
 
     private fun showManualSymbolDialog() {
         val input = android.widget.EditText(this).apply {
