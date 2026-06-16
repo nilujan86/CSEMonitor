@@ -63,15 +63,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun searchSymbols(query: String) {
-        if (query.length < 2) {
-            _searchResults.value = CSE_POPULAR_STOCKS
-            return
-        }
-        viewModelScope.launch {
-            _searchResults.value = repository.searchSymbols(query)
-        }
+   fun searchSymbols(query: String) {
+    viewModelScope.launch {
+        _isLoading.value = true
+        _searchResults.value = repository.searchSymbols(query)
+        _isLoading.value = false
     }
+}
 
     private fun loadMarketSummary() {
         viewModelScope.launch {
