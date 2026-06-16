@@ -30,6 +30,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         loadMarketSummary()
+        searchSymbols("")  
     }
 
     fun addToWatchlist(symbol: String) {
