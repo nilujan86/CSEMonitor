@@ -45,7 +45,10 @@ data class IntradayPoint(
     @SerializedName("price") val price: Double,
     @SerializedName("volume") val volume: Long?
 )
-
+data class SymbolSearchResult(
+    @SerializedName("symbol") val symbol: String,
+    @SerializedName("name")   val name: String
+)
 // ── Room Entity: Watched Stocks ───────────────────────────────────────────────
 
 @Entity(tableName = "watched_stocks")
