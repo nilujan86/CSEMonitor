@@ -100,23 +100,50 @@ class StockRepository(context: Context) {
 
     // ── Symbol search ─────────────────────────────────────────────────────────
 
-    suspend fun searchSymbols(query: String): List<Pair<String, String>> {
-        return try {
+suspend fun searchSymbols(query: String): List<Pair<String, String>> {
+    return try {
+        if (query.isBlank()) {
+            // Load full company list when search bar is empty
+            val response = api.getAllSymbols()
+            if (response.isSuccessful) {
+                response.body()
+                    ?.map { Pair(it.symbol, it.name) }
+                    ?.filter { it.first.isNotEmpty() }
+                    ?: CSE_POPULAR_STOCKS
+            } else {
+                CSE_POPULAR_STOCKS
+            }
+        } else {
+            // Keyword search
             val response = api.searchSymbols(query)
             if (response.isSuccessful) {
-                response.body()?.map { map ->
-                    Pair(map["symbol"] ?: "", map["name"] ?: "")
-                }?.filter { it.first.isNotEmpty() } ?: emptyList()
-            } else emptyList()
-        } catch (e: Exception) {
-            // Fall back to local list filtered by query
-            CSE_POPULAR_STOCKS.filter {
-                it.first.contains(query, ignoreCase = true) ||
-                it.second.contains(query, ignoreCase = true)
+                val results = response.body()
+                    ?.map { Pair(it.symbol, it.name) }
+                    ?.filter { it.first.isNotEmpty() }
+                    ?: emptyList()
+
+                // If API returns nothing, fall back to local filter
+                if (results.isEmpty()) {
+                    CSE_POPULAR_STOCKS.filter {
+                        it.first.contains(query, ignoreCase = true) ||
+                        it.second.contains(query, ignoreCase = true)
+                    }
+                } else results
+            } else {
+                CSE_POPULAR_STOCKS.filter {
+                    it.first.contains(query, ignoreCase = true) ||
+                    it.second.contains(query, ignoreCase = true)
+                }
             }
         }
+    } catch (e: Exception) {
+        // Network failed — filter local list
+        CSE_POPULAR_STOCKS.filter {
+            it.first.contains(query, ignoreCase = true) ||
+            it.second.contains(query, ignoreCase = true)
+        }
     }
-
+}
     // ── Widget helpers ────────────────────────────────────────────────────────
 
     suspend fun setWidgetStock(symbol: String) {
