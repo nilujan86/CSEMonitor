@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etDialogSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type company name or symbol…"
+        android:inputType="text"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginBottom="8dp" />
+
+    <ProgressBar
+        android:id="@+id/dialogProgress"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDialogResults"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>
